@@ -105,3 +105,116 @@ def calculate_comparison(
             ),
         },
     }
+def calculate_goal_sip(
+    goal_amount: float,
+    annual_return_rate: float,
+    duration_years: float,
+) -> dict:
+    """
+    Reverse SIP: How much monthly SIP needed to reach a goal?
+    Formula: P = Goal × r / [((1+r)^n - 1) × (1+r)]
+    """
+    r = annual_return_rate / 12 / 100
+    n = duration_years * 12
+
+    monthly_sip  = goal_amount * r / ((pow(1 + r, n) - 1) * (1 + r))
+    total_invest = monthly_sip * n
+    total_gains  = goal_amount - total_invest
+
+    return {
+        "goal_amount":             round(goal_amount),
+        "required_monthly_sip":    round(monthly_sip),
+        "total_investment":        round(total_invest),
+        "total_gains":             round(total_gains),
+        "duration_years":          duration_years,
+        "annual_return_rate":      annual_return_rate,
+        "wealth_gained_percent":   f"{(total_gains / total_invest * 100):.2f}",
+    }
+
+
+def calculate_swp(
+    corpus_amount: float,
+    monthly_withdrawal: float,
+    annual_return_rate: float,
+    duration_years: int,
+) -> dict:
+    """
+    SWP: Monthly withdrawal from a corpus while it keeps earning.
+    Simulate month by month.
+    """
+    r       = annual_return_rate / 12 / 100
+    balance = corpus_amount
+    total_withdrawn = 0.0
+    yearly_data = []
+
+    for year in range(1, duration_years + 1):
+        for month in range(1, 13):
+            if balance <= 0:
+                balance = 0
+                break
+            balance  = balance * (1 + r) - monthly_withdrawal
+            total_withdrawn += monthly_withdrawal
+
+        yearly_data.append({
+            "year":             year,
+            "balance":          max(round(balance), 0),
+            "total_withdrawn":  round(total_withdrawn),
+        })
+
+        if balance <= 0:
+            break
+
+    months_corpus_lasts = 0
+    bal = corpus_amount
+    while bal > 0:
+        bal = bal * (1 + r) - monthly_withdrawal
+        months_corpus_lasts += 1
+        if months_corpus_lasts > duration_years * 12:
+            break
+
+    return {
+        "corpus_amount":         round(corpus_amount),
+        "monthly_withdrawal":    round(monthly_withdrawal),
+        "annual_return_rate":    annual_return_rate,
+        "duration_years":        duration_years,
+        "final_balance":         max(round(balance), 0),
+        "total_withdrawn":       round(total_withdrawn),
+        "corpus_survives":       balance > 0,
+        "yearly_breakdown":      yearly_data,
+    }
+
+
+def calculate_ppf(
+    annual_investment: float,
+    duration_years: int = 15,
+) -> dict:
+    """
+    PPF: 15-year lock-in, 7.1% interest (compounded annually).
+    Indian government scheme.
+    """
+    RATE = 7.1 / 100
+    balance      = 0.0
+    total_invest = 0.0
+    yearly_data  = []
+
+    for year in range(1, duration_years + 1):
+        balance      = (balance + annual_investment) * (1 + RATE)
+        total_invest += annual_investment
+        yearly_data.append({
+            "year":          year,
+            "invested":      round(total_invest),
+            "balance":       round(balance),
+        })
+
+    gains = balance - total_invest
+    return {
+        "annual_investment":      round(annual_investment),
+        "duration_years":         duration_years,
+        "interest_rate":          7.1,
+        "total_invested":         round(total_invest),
+        "estimated_returns":      round(gains),
+        "maturity_amount":        round(balance),
+        "wealth_gained_percent":  f"{(gains / total_invest * 100):.2f}",
+        "yearly_breakdown":       yearly_data,
+        "tax_benefit":            "Investment qualifies for deduction under Section 80C",
+    }

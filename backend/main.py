@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import (SIPRequest, StepUpSIPRequest, LumpsumRequest,
-                    CompareRequest, XIRRRequest, IRRRequest)
+                    CompareRequest, XIRRRequest, IRRRequest,
+                    GoalSIPRequest, SWPRequest, PPFRequest)
 from calculator import (calculate_sip, calculate_step_up_sip,
-                        calculate_lumpsum, calculate_comparison)
+                        calculate_lumpsum, calculate_comparison,
+                        calculate_goal_sip, calculate_swp, calculate_ppf)
 from xirr import xirr, irr
 
 app = FastAPI(
@@ -138,3 +140,4 @@ def calculate_irr(req: IRRRequest):
                 "disclaimer": DISCLAIMER}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+

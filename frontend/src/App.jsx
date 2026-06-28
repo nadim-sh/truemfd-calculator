@@ -4,9 +4,12 @@ import StepUpForm  from "./components/StepUpForm";
 import LumpsumForm from "./components/LumpsumForm";
 import CompareForm from "./components/CompareForm";
 import XIRRForm    from "./components/XIRRForm";
+import GoalSIPForm from "./components/GoalSIPForm";
+import SWPForm     from "./components/SWPForm";
+import PPFForm     from "./components/PPFForm";
 import ResultCard  from "./components/ResultCard";
 
-const TABS = ["SIP", "Step-Up SIP", "Lumpsum", "Compare", "XIRR"];
+const TABS = ["SIP","Step-Up SIP","Lumpsum","Goal SIP","SWP","PPF","Compare","XIRR"];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("SIP");
@@ -16,7 +19,7 @@ export default function App() {
     <div style={styles.app}>
       <header style={styles.header}>
         <h1 style={styles.title}>📈 SIP Calculator</h1>
-        <p style={styles.subtitle}>Plan your investments smarter</p>
+        <p style={styles.subtitle}>Complete Investment Planning Tool</p>
       </header>
       <div style={styles.tabBar}>
         {TABS.map((tab) => (
@@ -34,6 +37,9 @@ export default function App() {
           {activeTab === "Lumpsum"     && <LumpsumForm onResult={setResult} />}
           {activeTab === "Compare"     && <CompareForm onResult={setResult} />}
           {activeTab === "XIRR"        && <XIRRForm    onResult={setResult} />}
+          {activeTab === "Goal SIP"    && <GoalSIPForm onResult={setResult} />}
+          {activeTab === "SWP"         && <SWPForm     onResult={setResult} />}
+          {activeTab === "PPF"         && <PPFForm     onResult={setResult} />}
         </div>
         {result && (
           <div style={styles.resultPanel}>
