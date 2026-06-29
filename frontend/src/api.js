@@ -8,7 +8,7 @@ export const api = {
   lumpsum: (p)    => axios.get(`${BASE}/lumpsum/calculate`, { params: p }),
   compare: (p)    => axios.get(`${BASE}/compare`,           { params: p }),
   xirr:    (body) => axios.post(`${BASE}/xirr`,             body),
-  goalSip: (p)    => axios.get(`${BASE}/goal-sip`,          { params: p }),  // ← FIXED
+  goalSip: (p)    => axios.get(`${BASE}/goal-sip`,          { params: p }),
   swp:     (p)    => axios.get(`${BASE}/swp/calculate`,     { params: p }),
   ppf:     (p)    => axios.get(`${BASE}/ppf/calculate`,     { params: p }),
 };
