@@ -1,0 +1,22 @@
+services:
+  # Backend - FastAPI
+  - type: web
+    name: truemfd-calculator-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+  # Frontend - React
+  - type: web
+    name: truemfd-calculator-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://truemfd-calculator-api.onrender.com
