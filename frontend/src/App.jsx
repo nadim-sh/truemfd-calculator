@@ -16,6 +16,8 @@ const TABS = [
   { id: "Goal SIP",    label: "🎯 Goal SIP",     desc: "Target-based planning" },
   { id: "SWP",         label: "🔄 SWP",          desc: "Systematic Withdrawal" },
   { id: "PPF",         label: "🏛️ PPF",          desc: "Public Provident Fund" },
+  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum", desc: "Combined SIP & Lumpsum investment" },
+
   { id: "Compare",     label: "⚖️ Compare",      desc: "SIP vs Lumpsum" },
   { id: "XIRR",        label: "📐 XIRR",         desc: "Actual returns calculator" },
 ];
@@ -82,6 +84,8 @@ export default function App() {
           {activeTab === "Goal SIP"    && <GoalSIPForm onResult={setResult} />}
           {activeTab === "SWP"         && <SWPForm     onResult={setResult} />}
           {activeTab === "PPF"         && <PPFForm     onResult={setResult} />}
+          {activeTab === "SIP + Lumpsum" && <SIPLumpsumForm onResult={setResult} />}
+
           {activeTab === "Compare"     && <CompareForm onResult={setResult} />}
           {activeTab === "XIRR"        && <XIRRForm    onResult={setResult} />}
         </div>
@@ -291,3 +295,5 @@ const styles = {
     marginTop:    "0.8rem",
   },
 };
+import SIPLumpsumForm from "./components/SIPLumpsumForm";
+
