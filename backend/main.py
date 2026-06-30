@@ -30,12 +30,8 @@ app.add_middleware(
 DISCLAIMER = (
     "Mutual fund investments are subject to market risks. "
     "Returns shown are illustrative and not guaranteed. "
-    "Powered by TrueMFD — AMFI Registered Mutual Fund Distributor | ARN-2213 | EUIN-E073190"
+    "Powered by TrueMFD — AMFI Registered | ARN-2213 | EUIN-E073190"
 )
-
-# ─────────────────────────────────────────
-# HEALTH CHECK
-# ─────────────────────────────────────────
 
 @app.get("/", tags=["Health"])
 def root():
@@ -44,37 +40,18 @@ def root():
         "powered_by": "TrueMFD — ARN-2213 | EUIN-E073190",
         "docs": "/docs",
         "calculators": [
-            "/sip/calculate",
-            "/sip/step-up",
-            "/lumpsum/calculate",
-            "/goal-sip",
-            "/swp/calculate",
-            "/ppf/calculate",
-            "/sip-lumpsum",
-            "/compare",
-            "/xirr",
-            "/irr",
+            "/sip/calculate", "/sip/step-up",
+            "/lumpsum/calculate", "/goal-sip",
+            "/swp/calculate", "/ppf/calculate",
+            "/sip-lumpsum", "/compare", "/xirr", "/irr",
         ]
     }
 
-# ─────────────────────────────────────────
-# STANDARD SIP
-# ─────────────────────────────────────────
-
 @app.post("/sip/calculate", tags=["SIP"])
 def sip_post(req: SIPRequest):
-    result = calculate_sip(
-        req.monthly_investment,
-        req.annual_return_rate,
-        req.duration_years
-    )
-    return {
-        "type": "Standard SIP",
-        "inputs": req.model_dump(),
-        "results": result.model_dump(),
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    result = calculate_sip(req.monthly_investment, req.annual_return_rate, req.duration_years)
+    return {"type": "Standard SIP", "inputs": req.model_dump(),
+            "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/sip/calculate", tags=["SIP"])
 def sip_get(
@@ -83,38 +60,21 @@ def sip_get(
     duration_years: float     = Query(..., gt=0),
 ):
     result = calculate_sip(monthly_investment, annual_return_rate, duration_years)
-    return {
-        "type": "Standard SIP",
-        "inputs": {
-            "monthly_investment": monthly_investment,
-            "annual_return_rate": annual_return_rate,
-            "duration_years": duration_years,
-        },
-        "results": result.model_dump(),
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# STEP-UP SIP
-# ─────────────────────────────────────────
+    return {"type": "Standard SIP",
+            "inputs": {"monthly_investment": monthly_investment,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years},
+            "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/sip/step-up", tags=["Step-Up SIP"])
 def step_up_post(req: StepUpSIPRequest):
     result, breakdown = calculate_step_up_sip(
-        req.monthly_investment,
-        req.annual_return_rate,
-        req.duration_years,
-        req.annual_step_up_percent
-    )
-    return {
-        "type": "Step-Up SIP",
-        "inputs": req.model_dump(),
-        "results": result.model_dump(),
-        "yearly_breakdown": [y.model_dump() for y in breakdown],
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+        req.monthly_investment, req.annual_return_rate,
+        req.duration_years, req.annual_step_up_percent)
+    return {"type": "Step-Up SIP", "inputs": req.model_dump(),
+            "results": result.model_dump(),
+            "yearly_breakdown": [y.model_dump() for y in breakdown],
+            "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/sip/step-up", tags=["Step-Up SIP"])
 def step_up_get(
@@ -124,41 +84,21 @@ def step_up_get(
     annual_step_up_percent: float = Query(..., ge=0, le=100),
 ):
     result, breakdown = calculate_step_up_sip(
-        monthly_investment, annual_return_rate,
-        duration_years, annual_step_up_percent
-    )
-    return {
-        "type": "Step-Up SIP",
-        "inputs": {
-            "monthly_investment": monthly_investment,
-            "annual_return_rate": annual_return_rate,
-            "duration_years": duration_years,
-            "annual_step_up_percent": annual_step_up_percent,
-        },
-        "results": result.model_dump(),
-        "yearly_breakdown": [y.model_dump() for y in breakdown],
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# LUMPSUM
-# ─────────────────────────────────────────
+        monthly_investment, annual_return_rate, duration_years, annual_step_up_percent)
+    return {"type": "Step-Up SIP",
+            "inputs": {"monthly_investment": monthly_investment,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years,
+                       "annual_step_up_percent": annual_step_up_percent},
+            "results": result.model_dump(),
+            "yearly_breakdown": [y.model_dump() for y in breakdown],
+            "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/lumpsum/calculate", tags=["Lumpsum"])
 def lumpsum_post(req: LumpsumRequest):
-    result = calculate_lumpsum(
-        req.investment_amount,
-        req.annual_return_rate,
-        req.duration_years
-    )
-    return {
-        "type": "Lumpsum",
-        "inputs": req.model_dump(),
-        "results": result.model_dump(),
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    result = calculate_lumpsum(req.investment_amount, req.annual_return_rate, req.duration_years)
+    return {"type": "Lumpsum", "inputs": req.model_dump(),
+            "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/lumpsum/calculate", tags=["Lumpsum"])
 def lumpsum_get(
@@ -166,39 +106,18 @@ def lumpsum_get(
     annual_return_rate: float = Query(..., gt=0),
     duration_years: float     = Query(..., gt=0),
 ):
-    result = calculate_lumpsum(
-        investment_amount, annual_return_rate, duration_years
-    )
-    return {
-        "type": "Lumpsum",
-        "inputs": {
-            "investment_amount": investment_amount,
-            "annual_return_rate": annual_return_rate,
-            "duration_years": duration_years,
-        },
-        "results": result.model_dump(),
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# GOAL-BASED SIP
-# ─────────────────────────────────────────
+    result = calculate_lumpsum(investment_amount, annual_return_rate, duration_years)
+    return {"type": "Lumpsum",
+            "inputs": {"investment_amount": investment_amount,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years},
+            "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/goal-sip", tags=["Goal SIP"])
 def goal_sip_post(req: GoalSIPRequest):
-    result = calculate_goal_sip(
-        req.goal_amount,
-        req.annual_return_rate,
-        req.duration_years
-    )
-    return {
-        "type": "Goal-Based SIP",
-        "inputs": req.model_dump(),
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    result = calculate_goal_sip(req.goal_amount, req.annual_return_rate, req.duration_years)
+    return {"type": "Goal-Based SIP", "inputs": req.model_dump(),
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/goal-sip", tags=["Goal SIP"])
 def goal_sip_get(
@@ -207,37 +126,18 @@ def goal_sip_get(
     duration_years: float     = Query(..., gt=0),
 ):
     result = calculate_goal_sip(goal_amount, annual_return_rate, duration_years)
-    return {
-        "type": "Goal-Based SIP",
-        "inputs": {
-            "goal_amount": goal_amount,
-            "annual_return_rate": annual_return_rate,
-            "duration_years": duration_years,
-        },
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# SWP
-# ─────────────────────────────────────────
+    return {"type": "Goal-Based SIP",
+            "inputs": {"goal_amount": goal_amount,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years},
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/swp/calculate", tags=["SWP"])
 def swp_post(req: SWPRequest):
-    result = calculate_swp(
-        req.corpus_amount,
-        req.monthly_withdrawal,
-        req.annual_return_rate,
-        req.duration_years
-    )
-    return {
-        "type": "Systematic Withdrawal Plan (SWP)",
-        "inputs": req.model_dump(),
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    result = calculate_swp(req.corpus_amount, req.monthly_withdrawal,
+                           req.annual_return_rate, req.duration_years)
+    return {"type": "SWP", "inputs": req.model_dump(),
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/swp/calculate", tags=["SWP"])
 def swp_get(
@@ -246,40 +146,20 @@ def swp_get(
     annual_return_rate: float = Query(..., gt=0),
     duration_years: int       = Query(..., gt=0),
 ):
-    result = calculate_swp(
-        corpus_amount, monthly_withdrawal,
-        annual_return_rate, duration_years
-    )
-    return {
-        "type": "Systematic Withdrawal Plan (SWP)",
-        "inputs": {
-            "corpus_amount": corpus_amount,
-            "monthly_withdrawal": monthly_withdrawal,
-            "annual_return_rate": annual_return_rate,
-            "duration_years": duration_years,
-        },
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# PPF
-# ─────────────────────────────────────────
+    result = calculate_swp(corpus_amount, monthly_withdrawal,
+                           annual_return_rate, duration_years)
+    return {"type": "SWP",
+            "inputs": {"corpus_amount": corpus_amount,
+                       "monthly_withdrawal": monthly_withdrawal,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years},
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/ppf/calculate", tags=["PPF"])
 def ppf_post(req: PPFRequest):
-    result = calculate_ppf(
-        req.annual_investment,
-        req.duration_years
-    )
-    return {
-        "type": "PPF (Public Provident Fund)",
-        "inputs": req.model_dump(),
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    result = calculate_ppf(req.annual_investment, req.duration_years)
+    return {"type": "PPF", "inputs": req.model_dump(),
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/ppf/calculate", tags=["PPF"])
 def ppf_get(
@@ -287,36 +167,17 @@ def ppf_get(
     duration_years: int      = Query(15, ge=15, le=50),
 ):
     result = calculate_ppf(annual_investment, duration_years)
-    return {
-        "type": "PPF (Public Provident Fund)",
-        "inputs": {
-            "annual_investment": annual_investment,
-            "duration_years": duration_years,
-        },
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# SIP + LUMPSUM COMBINED
-# ─────────────────────────────────────────
+    return {"type": "PPF",
+            "inputs": {"annual_investment": annual_investment,
+                       "duration_years": duration_years},
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/sip-lumpsum", tags=["SIP + Lumpsum"])
 def sip_lumpsum_post(req: SIPLumpsumRequest):
-    result = calculate_sip_lumpsum(
-        req.lumpsum_amount,
-        req.monthly_sip,
-        req.annual_return_rate,
-        req.duration_years
-    )
-    return {
-        "type": "SIP + Lumpsum Combined",
-        "inputs": req.model_dump(),
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    result = calculate_sip_lumpsum(req.lumpsum_amount, req.monthly_sip,
+                                   req.annual_return_rate, req.duration_years)
+    return {"type": "SIP + Lumpsum Combined", "inputs": req.model_dump(),
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/sip-lumpsum", tags=["SIP + Lumpsum"])
 def sip_lumpsum_get(
@@ -325,41 +186,20 @@ def sip_lumpsum_get(
     annual_return_rate: float = Query(..., gt=0),
     duration_years:     float = Query(..., gt=0),
 ):
-    result = calculate_sip_lumpsum(
-        lumpsum_amount, monthly_sip,
-        annual_return_rate, duration_years
-    )
-    return {
-        "type": "SIP + Lumpsum Combined",
-        "inputs": {
-            "lumpsum_amount":     lumpsum_amount,
-            "monthly_sip":        monthly_sip,
-            "annual_return_rate": annual_return_rate,
-            "duration_years":     duration_years,
-        },
-        "results": result,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# SIP vs LUMPSUM COMPARISON
-# ─────────────────────────────────────────
+    result = calculate_sip_lumpsum(lumpsum_amount, monthly_sip,
+                                   annual_return_rate, duration_years)
+    return {"type": "SIP + Lumpsum Combined",
+            "inputs": {"lumpsum_amount": lumpsum_amount,
+                       "monthly_sip": monthly_sip,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years},
+            "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/compare", tags=["Comparison"])
 def compare_post(req: CompareRequest):
-    data = calculate_comparison(
-        req.monthly_investment,
-        req.annual_return_rate,
-        req.duration_years
-    )
-    return {
-        "type": "SIP vs Lumpsum Comparison",
-        "inputs": req.model_dump(),
-        **data,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
+    data = calculate_comparison(req.monthly_investment, req.annual_return_rate, req.duration_years)
+    return {"type": "SIP vs Lumpsum Comparison", "inputs": req.model_dump(),
+            **data, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.get("/compare", tags=["Comparison"])
 def compare_get(
@@ -367,36 +207,22 @@ def compare_get(
     annual_return_rate: float = Query(..., gt=0),
     duration_years: float     = Query(..., gt=0),
 ):
-    data = calculate_comparison(
-        monthly_investment, annual_return_rate, duration_years
-    )
-    return {
-        "type": "SIP vs Lumpsum Comparison",
-        "inputs": {
-            "monthly_investment": monthly_investment,
-            "annual_return_rate": annual_return_rate,
-            "duration_years": duration_years,
-        },
-        **data,
-        "currency": "INR",
-        "disclaimer": DISCLAIMER
-    }
-
-# ─────────────────────────────────────────
-# XIRR / IRR
-# ─────────────────────────────────────────
+    data = calculate_comparison(monthly_investment, annual_return_rate, duration_years)
+    return {"type": "SIP vs Lumpsum Comparison",
+            "inputs": {"monthly_investment": monthly_investment,
+                       "annual_return_rate": annual_return_rate,
+                       "duration_years": duration_years},
+            **data, "currency": "INR", "disclaimer": DISCLAIMER}
 
 @app.post("/xirr", tags=["XIRR / IRR"])
 def calculate_xirr(req: XIRRRequest):
     try:
         cashflows = [(cf.date, cf.amount) for cf in req.cashflows]
         rate = xirr(cashflows)
-        return {
-            "xirr_percent": round(rate * 100, 4),
-            "xirr_decimal": round(rate, 6),
-            "interpretation": f"Your investment earned {rate*100:.2f}% annualized return.",
-            "disclaimer": DISCLAIMER
-        }
+        return {"xirr_percent": round(rate * 100, 4),
+                "xirr_decimal": round(rate, 6),
+                "interpretation": f"Your investment earned {rate*100:.2f}% annualized return.",
+                "disclaimer": DISCLAIMER}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -405,12 +231,10 @@ def calculate_irr(req: IRRRequest):
     try:
         rate_per_period = irr(req.cashflows)
         annual_rate     = pow(1 + rate_per_period, req.periods_per_year) - 1
-        return {
-            "irr_per_period_percent": round(rate_per_period * 100, 4),
-            "annualized_irr_percent": round(annual_rate * 100, 4),
-            "periods_per_year": req.periods_per_year,
-            "interpretation": f"Annualized IRR = {annual_rate*100:.2f}%",
-            "disclaimer": DISCLAIMER
-        }
+        return {"irr_per_period_percent": round(rate_per_period * 100, 4),
+                "annualized_irr_percent": round(annual_rate * 100, 4),
+                "periods_per_year": req.periods_per_year,
+                "interpretation": f"Annualized IRR = {annual_rate*100:.2f}%",
+                "disclaimer": DISCLAIMER}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
