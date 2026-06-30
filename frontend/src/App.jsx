@@ -43,7 +43,7 @@ export default function App() {
   }, []);
 
   const renderForm = () => {
-    setResult(null);
+    
     switch (activeTab) {
       case 'sip': return <SIPForm onResult={setResult} />;
       case 'stepup': return <StepUpForm onResult={setResult} />;
