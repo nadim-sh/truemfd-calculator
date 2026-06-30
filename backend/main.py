@@ -12,11 +12,7 @@ from xirr import xirr, irr
 
 app = FastAPI(
     title="TrueMFD SIP Calculator API",
-    description=(
-        "Standard SIP · Step-Up SIP · Lumpsum · Goal SIP · "
-        "SWP · PPF · SIP+Lumpsum · Comparison · XIRR/IRR | "
-        "Powered by TrueMFD — ARN-2213"
-    ),
+    description="SIP · Step-Up · Lumpsum · Goal SIP · SWP · PPF · SIP+Lumpsum · XIRR | TrueMFD ARN-2213",
     version="5.0.0",
 )
 
@@ -30,21 +26,15 @@ app.add_middleware(
 DISCLAIMER = (
     "Mutual fund investments are subject to market risks. "
     "Returns shown are illustrative and not guaranteed. "
-    "Powered by TrueMFD — AMFI Registered | ARN-2213 | EUIN-E073190"
+    "TrueMFD — ARN-2213 | EUIN-E073190"
 )
 
 @app.get("/", tags=["Health"])
 def root():
     return {
-        "status": "✅ TrueMFD SIP Calculator API v5.0.0 running",
+        "status": "TrueMFD SIP Calculator API v5.0.0 running",
         "powered_by": "TrueMFD — ARN-2213 | EUIN-E073190",
         "docs": "/docs",
-        "calculators": [
-            "/sip/calculate", "/sip/step-up",
-            "/lumpsum/calculate", "/goal-sip",
-            "/swp/calculate", "/ppf/calculate",
-            "/sip-lumpsum", "/compare", "/xirr", "/irr",
-        ]
     }
 
 @app.post("/sip/calculate", tags=["SIP"])
@@ -57,7 +47,7 @@ def sip_post(req: SIPRequest):
 def sip_get(
     monthly_investment: float = Query(..., gt=0),
     annual_return_rate: float = Query(..., gt=0),
-    duration_years: float     = Query(..., gt=0),
+    duration_years: float = Query(..., gt=0),
 ):
     result = calculate_sip(monthly_investment, annual_return_rate, duration_years)
     return {"type": "Standard SIP",
@@ -78,13 +68,14 @@ def step_up_post(req: StepUpSIPRequest):
 
 @app.get("/sip/step-up", tags=["Step-Up SIP"])
 def step_up_get(
-    monthly_investment: float     = Query(..., gt=0),
-    annual_return_rate: float     = Query(..., gt=0),
-    duration_years: int           = Query(..., gt=0),
+    monthly_investment: float = Query(..., gt=0),
+    annual_return_rate: float = Query(..., gt=0),
+    duration_years: int = Query(..., gt=0),
     annual_step_up_percent: float = Query(..., ge=0, le=100),
 ):
     result, breakdown = calculate_step_up_sip(
-        monthly_investment, annual_return_rate, duration_years, annual_step_up_percent)
+        monthly_investment, annual_return_rate,
+        duration_years, annual_step_up_percent)
     return {"type": "Step-Up SIP",
             "inputs": {"monthly_investment": monthly_investment,
                        "annual_return_rate": annual_return_rate,
@@ -102,9 +93,9 @@ def lumpsum_post(req: LumpsumRequest):
 
 @app.get("/lumpsum/calculate", tags=["Lumpsum"])
 def lumpsum_get(
-    investment_amount: float  = Query(..., gt=0),
+    investment_amount: float = Query(..., gt=0),
     annual_return_rate: float = Query(..., gt=0),
-    duration_years: float     = Query(..., gt=0),
+    duration_years: float = Query(..., gt=0),
 ):
     result = calculate_lumpsum(investment_amount, annual_return_rate, duration_years)
     return {"type": "Lumpsum",
@@ -121,9 +112,9 @@ def goal_sip_post(req: GoalSIPRequest):
 
 @app.get("/goal-sip", tags=["Goal SIP"])
 def goal_sip_get(
-    goal_amount: float        = Query(..., gt=0),
+    goal_amount: float = Query(..., gt=0),
     annual_return_rate: float = Query(..., gt=0),
-    duration_years: float     = Query(..., gt=0),
+    duration_years: float = Query(..., gt=0),
 ):
     result = calculate_goal_sip(goal_amount, annual_return_rate, duration_years)
     return {"type": "Goal-Based SIP",
@@ -141,10 +132,10 @@ def swp_post(req: SWPRequest):
 
 @app.get("/swp/calculate", tags=["SWP"])
 def swp_get(
-    corpus_amount: float      = Query(..., gt=0),
+    corpus_amount: float = Query(..., gt=0),
     monthly_withdrawal: float = Query(..., gt=0),
     annual_return_rate: float = Query(..., gt=0),
-    duration_years: int       = Query(..., gt=0),
+    duration_years: int = Query(..., gt=0),
 ):
     result = calculate_swp(corpus_amount, monthly_withdrawal,
                            annual_return_rate, duration_years)
@@ -164,7 +155,7 @@ def ppf_post(req: PPFRequest):
 @app.get("/ppf/calculate", tags=["PPF"])
 def ppf_get(
     annual_investment: float = Query(..., gt=0, le=150000),
-    duration_years: int      = Query(15, ge=15, le=50),
+    duration_years: int = Query(15, ge=15, le=50),
 ):
     result = calculate_ppf(annual_investment, duration_years)
     return {"type": "PPF",
@@ -181,10 +172,10 @@ def sip_lumpsum_post(req: SIPLumpsumRequest):
 
 @app.get("/sip-lumpsum", tags=["SIP + Lumpsum"])
 def sip_lumpsum_get(
-    lumpsum_amount:     float = Query(..., gt=0),
-    monthly_sip:        float = Query(..., gt=0),
+    lumpsum_amount: float = Query(..., gt=0),
+    monthly_sip: float = Query(..., gt=0),
     annual_return_rate: float = Query(..., gt=0),
-    duration_years:     float = Query(..., gt=0),
+    duration_years: float = Query(..., gt=0),
 ):
     result = calculate_sip_lumpsum(lumpsum_amount, monthly_sip,
                                    annual_return_rate, duration_years)
@@ -205,7 +196,7 @@ def compare_post(req: CompareRequest):
 def compare_get(
     monthly_investment: float = Query(..., gt=0),
     annual_return_rate: float = Query(..., gt=0),
-    duration_years: float     = Query(..., gt=0),
+    duration_years: float = Query(..., gt=0),
 ):
     data = calculate_comparison(monthly_investment, annual_return_rate, duration_years)
     return {"type": "SIP vs Lumpsum Comparison",
@@ -230,7 +221,7 @@ def calculate_xirr(req: XIRRRequest):
 def calculate_irr(req: IRRRequest):
     try:
         rate_per_period = irr(req.cashflows)
-        annual_rate     = pow(1 + rate_per_period, req.periods_per_year) - 1
+        annual_rate = pow(1 + rate_per_period, req.periods_per_year) - 1
         return {"irr_per_period_percent": round(rate_per_period * 100, 4),
                 "annualized_irr_percent": round(annual_rate * 100, 4),
                 "periods_per_year": req.periods_per_year,
