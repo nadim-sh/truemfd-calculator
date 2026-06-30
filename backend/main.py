@@ -369,3 +369,12 @@ def calculate_irr(req: IRRRequest):
         }
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+      from models import (SIPRequest, StepUpSIPRequest, LumpsumRequest,
+                    CompareRequest, XIRRRequest, IRRRequest,
+                    GoalSIPRequest, SWPRequest, PPFRequest,
+                    SIPLumpsumRequest)
+from calculator import (calculate_sip, calculate_step_up_sip,
+                        calculate_lumpsum, calculate_comparison,
+                        calculate_goal_sip, calculate_swp, calculate_ppf,
+                        calculate_sip_lumpsum)
+
