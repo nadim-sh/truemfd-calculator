@@ -123,6 +123,41 @@ export default function ResultCard({ data, type }) {
     );
   }
 
+  // ── SIP + LUMPSUM COMBINED ────────────────────────
+  if (type === "SIP + Lumpsum") {
+    const r = data.results;
+    return (
+      <div style={card}>
+        <h2 style={heading}>💎 SIP + Lumpsum Result</h2>
+        <div style={highlightBox}>
+          <div style={highlightLabel}>💰 Total Maturity Amount</div>
+          <div style={highlightValue}>{fmt(r.total_maturity)}</div>
+        </div>
+
+        <div style={{ display: "flex", gap: "1rem", margin: "1rem 0", flexWrap: "wrap" }}>
+          <div style={miniCard}>
+            <div style={miniLabel}>💰 Lumpsum Maturity</div>
+            <div style={miniValue}>{fmt(r.lumpsum_maturity)}</div>
+            <div style={miniSub}>Invested: {fmt(r.lumpsum_invested)}</div>
+            <div style={miniSub}>Gains: {fmt(r.lumpsum_gains)}</div>
+          </div>
+          <div style={miniCard}>
+            <div style={miniLabel}>📅 SIP Maturity</div>
+            <div style={miniValue}>{fmt(r.sip_maturity)}</div>
+            <div style={miniSub}>Invested: {fmt(r.sip_invested)}</div>
+            <div style={miniSub}>Gains: {fmt(r.sip_gains)}</div>
+          </div>
+        </div>
+
+        <Row label="Total Invested"      value={fmt(r.total_invested)} />
+        <Row label="Total Gains"         value={fmt(r.total_gains)} color="#2e7d32" />
+        <Row label="Wealth Gained"       value={`${r.wealth_gained_percent}%`} />
+        <Row label="Annual Return"       value={`${r.annual_return_rate}% p.a.`} />
+        <Row label="Duration"            value={`${r.duration_years} Years`} />
+        <p style={disclaimer}>{data.disclaimer}</p>
+      </div>
+    );
+  }
   // ── COMPARE ───────────────────────────────────────
   if (type === "Compare") {
     return (
