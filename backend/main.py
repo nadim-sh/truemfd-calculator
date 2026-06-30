@@ -2,20 +2,22 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import (SIPRequest, StepUpSIPRequest, LumpsumRequest,
                     CompareRequest, XIRRRequest, IRRRequest,
-                    GoalSIPRequest, SWPRequest, PPFRequest)
+                    GoalSIPRequest, SWPRequest, PPFRequest,
+                    SIPLumpsumRequest)
 from calculator import (calculate_sip, calculate_step_up_sip,
                         calculate_lumpsum, calculate_comparison,
-                        calculate_goal_sip, calculate_swp, calculate_ppf)
+                        calculate_goal_sip, calculate_swp, calculate_ppf,
+                        calculate_sip_lumpsum)
 from xirr import xirr, irr
 
 app = FastAPI(
     title="TrueMFD SIP Calculator API",
     description=(
         "Standard SIP · Step-Up SIP · Lumpsum · Goal SIP · "
-        "SWP · PPF · Comparison · XIRR/IRR | "
+        "SWP · PPF · SIP+Lumpsum · Comparison · XIRR/IRR | "
         "Powered by TrueMFD — ARN-2213"
     ),
-    version="4.0.0",
+    version="5.0.0",
 )
 
 app.add_middleware(
@@ -38,7 +40,7 @@ DISCLAIMER = (
 @app.get("/", tags=["Health"])
 def root():
     return {
-        "status": "✅ TrueMFD SIP Calculator API v4.0.0 running",
+        "status": "✅ TrueMFD SIP Calculator API v5.0.0 running",
         "powered_by": "TrueMFD — ARN-2213 | EUIN-E073190",
         "docs": "/docs",
         "calculators": [
@@ -48,6 +50,7 @@ def root():
             "/goal-sip",
             "/swp/calculate",
             "/ppf/calculate",
+            "/sip-lumpsum",
             "/compare",
             "/xirr",
             "/irr",
@@ -75,9 +78,9 @@ def sip_post(req: SIPRequest):
 
 @app.get("/sip/calculate", tags=["SIP"])
 def sip_get(
-    monthly_investment: float = Query(..., gt=0, description="Monthly SIP amount in INR"),
-    annual_return_rate: float = Query(..., gt=0, description="Expected annual return %"),
-    duration_years: float     = Query(..., gt=0, description="Investment duration in years"),
+    monthly_investment: float = Query(..., gt=0),
+    annual_return_rate: float = Query(..., gt=0),
+    duration_years: float     = Query(..., gt=0),
 ):
     result = calculate_sip(monthly_investment, annual_return_rate, duration_years)
     return {
@@ -179,7 +182,7 @@ def lumpsum_get(
     }
 
 # ─────────────────────────────────────────
-# GOAL-BASED SIP  ← NEW ROUTE ADDED
+# GOAL-BASED SIP
 # ─────────────────────────────────────────
 
 @app.post("/goal-sip", tags=["Goal SIP"])
@@ -199,9 +202,9 @@ def goal_sip_post(req: GoalSIPRequest):
 
 @app.get("/goal-sip", tags=["Goal SIP"])
 def goal_sip_get(
-    goal_amount: float        = Query(..., gt=0, description="Target corpus in INR"),
-    annual_return_rate: float = Query(..., gt=0, description="Expected annual return %"),
-    duration_years: float     = Query(..., gt=0, description="Duration in years"),
+    goal_amount: float        = Query(..., gt=0),
+    annual_return_rate: float = Query(..., gt=0),
+    duration_years: float     = Query(..., gt=0),
 ):
     result = calculate_goal_sip(goal_amount, annual_return_rate, duration_years)
     return {
@@ -217,7 +220,7 @@ def goal_sip_get(
     }
 
 # ─────────────────────────────────────────
-# SWP — SYSTEMATIC WITHDRAWAL PLAN  ← NEW ROUTE ADDED
+# SWP
 # ─────────────────────────────────────────
 
 @app.post("/swp/calculate", tags=["SWP"])
@@ -238,10 +241,10 @@ def swp_post(req: SWPRequest):
 
 @app.get("/swp/calculate", tags=["SWP"])
 def swp_get(
-    corpus_amount: float      = Query(..., gt=0, description="Starting corpus in INR"),
-    monthly_withdrawal: float = Query(..., gt=0, description="Monthly withdrawal in INR"),
-    annual_return_rate: float = Query(..., gt=0, description="Expected annual return %"),
-    duration_years: int       = Query(..., gt=0, description="Duration in years"),
+    corpus_amount: float      = Query(..., gt=0),
+    monthly_withdrawal: float = Query(..., gt=0),
+    annual_return_rate: float = Query(..., gt=0),
+    duration_years: int       = Query(..., gt=0),
 ):
     result = calculate_swp(
         corpus_amount, monthly_withdrawal,
@@ -261,7 +264,7 @@ def swp_get(
     }
 
 # ─────────────────────────────────────────
-# PPF CALCULATOR  ← NEW ROUTE ADDED
+# PPF
 # ─────────────────────────────────────────
 
 @app.post("/ppf/calculate", tags=["PPF"])
@@ -280,10 +283,8 @@ def ppf_post(req: PPFRequest):
 
 @app.get("/ppf/calculate", tags=["PPF"])
 def ppf_get(
-    annual_investment: float = Query(..., gt=0, le=150000,
-                                     description="Annual PPF investment (max ₹1.5L)"),
-    duration_years: int      = Query(15, ge=15, le=50,
-                                     description="Min 15 years, extendable in 5-year blocks"),
+    annual_investment: float = Query(..., gt=0, le=150000),
+    duration_years: int      = Query(15, ge=15, le=50),
 ):
     result = calculate_ppf(annual_investment, duration_years)
     return {
@@ -291,6 +292,50 @@ def ppf_get(
         "inputs": {
             "annual_investment": annual_investment,
             "duration_years": duration_years,
+        },
+        "results": result,
+        "currency": "INR",
+        "disclaimer": DISCLAIMER
+    }
+
+# ─────────────────────────────────────────
+# SIP + LUMPSUM COMBINED
+# ─────────────────────────────────────────
+
+@app.post("/sip-lumpsum", tags=["SIP + Lumpsum"])
+def sip_lumpsum_post(req: SIPLumpsumRequest):
+    result = calculate_sip_lumpsum(
+        req.lumpsum_amount,
+        req.monthly_sip,
+        req.annual_return_rate,
+        req.duration_years
+    )
+    return {
+        "type": "SIP + Lumpsum Combined",
+        "inputs": req.model_dump(),
+        "results": result,
+        "currency": "INR",
+        "disclaimer": DISCLAIMER
+    }
+
+@app.get("/sip-lumpsum", tags=["SIP + Lumpsum"])
+def sip_lumpsum_get(
+    lumpsum_amount:     float = Query(..., gt=0),
+    monthly_sip:        float = Query(..., gt=0),
+    annual_return_rate: float = Query(..., gt=0),
+    duration_years:     float = Query(..., gt=0),
+):
+    result = calculate_sip_lumpsum(
+        lumpsum_amount, monthly_sip,
+        annual_return_rate, duration_years
+    )
+    return {
+        "type": "SIP + Lumpsum Combined",
+        "inputs": {
+            "lumpsum_amount":     lumpsum_amount,
+            "monthly_sip":        monthly_sip,
+            "annual_return_rate": annual_return_rate,
+            "duration_years":     duration_years,
         },
         "results": result,
         "currency": "INR",
@@ -369,12 +414,3 @@ def calculate_irr(req: IRRRequest):
         }
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-      from models import (SIPRequest, StepUpSIPRequest, LumpsumRequest,
-                    CompareRequest, XIRRRequest, IRRRequest,
-                    GoalSIPRequest, SWPRequest, PPFRequest,
-                    SIPLumpsumRequest)
-from calculator import (calculate_sip, calculate_step_up_sip,
-                        calculate_lumpsum, calculate_comparison,
-                        calculate_goal_sip, calculate_swp, calculate_ppf,
-                        calculate_sip_lumpsum)
-
