@@ -77,4 +77,9 @@ class PPFRequest(BaseModel):
     monthly_sip:       float = Field(..., gt=0, description="Monthly SIP amount in INR")
     annual_return_rate: float = Field(..., gt=0, description="Expected annual return %")
     duration_years:    float = Field(..., gt=0, description="Investment duration in years")
+class SIPLumpsumRequest(BaseModel):
+    lumpsum_amount:     float = Field(..., gt=0, description="One-time lumpsum investment in INR")
+    monthly_sip:        float = Field(..., gt=0, description="Monthly SIP amount in INR")
+    annual_return_rate: float = Field(..., gt=0, description="Expected annual return %")
+    duration_years:     float = Field(..., gt=0, description="Investment duration in years")
 
