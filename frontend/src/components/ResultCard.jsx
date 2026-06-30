@@ -291,4 +291,8 @@ const td           = { padding: "0.5rem 0.8rem", borderBottom: "1px solid #F4EFE
 const successBox   = { background: "#e8f5e9", borderRadius: "10px", padding: "0.8rem 1rem", margin: "0.8rem 0", color: "#2e7d32", fontSize: "0.88rem" };
 const warningBox   = { background: "#fff3e0", borderRadius: "10px", padding: "0.8rem 1rem", margin: "0.8rem 0", color: "#e65100", fontSize: "0.88rem" };
 const winnerBox    = { background: "linear-gradient(135deg,#F4EFE8,#DDD1C2)", borderRadius: "10px", padding: "1rem", margin: "1rem 0", color: "#4B3425" };
-const disclaimer   = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "1rem", lineHeight: 1.5 };
+const disclaimer   = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "1rem", lineHeight: 1.5 const miniCard  = { flex: "1 1 140px", background: "#F4EFE8", borderRadius: "10px", padding: "0.8rem", textAlign: "center" };
+const miniLabel = { fontSize: "0.75rem", color: "#B08D57", fontWeight: 700, marginBottom: "0.3rem" };
+const miniValue = { fontSize: "1.1rem", fontWeight: 700, color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif" };
+const miniSub   = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "0.2rem" };
+};
