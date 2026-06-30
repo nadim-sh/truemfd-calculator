@@ -218,3 +218,49 @@ def calculate_ppf(
         "yearly_breakdown":       yearly_data,
         "tax_benefit":            "Investment qualifies for deduction under Section 80C",
     }
+def calculate_sip_lumpsum(
+    lumpsum_amount: float,
+    monthly_sip: float,
+    annual_return_rate: float,
+    duration_years: float,
+) -> dict:
+    """
+    Combined SIP + Lumpsum Calculator
+    Lumpsum invested on Day 1 + Monthly SIP throughout
+    """
+    r = annual_return_rate / 12 / 100
+    n = duration_years * 12
+
+    # Lumpsum growth
+    lumpsum_maturity  = lumpsum_amount * pow(1 + r, n)
+    lumpsum_gains     = lumpsum_maturity - lumpsum_amount
+
+    # SIP growth
+    sip_maturity      = monthly_sip * ((pow(1 + r, n) - 1) / r) * (1 + r)
+    sip_invested      = monthly_sip * n
+    sip_gains         = sip_maturity - sip_invested
+
+    # Combined totals
+    total_invested    = lumpsum_amount + sip_invested
+    total_maturity    = lumpsum_maturity + sip_maturity
+    total_gains       = total_maturity - total_invested
+
+    return {
+        "lumpsum_amount":          round(lumpsum_amount),
+        "monthly_sip":             round(monthly_sip),
+        "annual_return_rate":      annual_return_rate,
+        "duration_years":          duration_years,
+
+        "lumpsum_invested":        round(lumpsum_amount),
+        "lumpsum_maturity":        round(lumpsum_maturity),
+        "lumpsum_gains":           round(lumpsum_gains),
+
+        "sip_invested":            round(sip_invested),
+        "sip_maturity":            round(sip_maturity),
+        "sip_gains":               round(sip_gains),
+
+        "total_invested":          round(total_invested),
+        "total_maturity":          round(total_maturity),
+        "total_gains":             round(total_gains),
+        "wealth_gained_percent":   f"{(total_gains / total_invested * 100):.2f}",
+    }
