@@ -13,12 +13,12 @@ export default function ResultCard({ data, type }) {
           <div style={highlightLabel}>Required Monthly SIP</div>
           <div style={highlightValue}>{fmt(r.required_monthly_sip)}</div>
         </div>
-        <Row label="Target Goal Amount"  value={fmt(r.goal_amount)} />
-        <Row label="Total Investment"    value={fmt(r.total_investment)} />
-        <Row label="Total Gains"         value={fmt(r.total_gains)} color="#2e7d32" />
-        <Row label="Duration"            value={`${r.duration_years} Years`} />
-        <Row label="Expected Return"     value={`${r.annual_return_rate}% p.a.`} />
-        <Row label="Wealth Gained"       value={`${r.wealth_gained_percent}%`} />
+        <Row label="Target Goal Amount" value={fmt(r.goal_amount)} />
+        <Row label="Total Investment"   value={fmt(r.total_investment)} />
+        <Row label="Total Gains"        value={fmt(r.total_gains)} color="#2e7d32" />
+        <Row label="Duration"           value={`${r.duration_years} Years`} />
+        <Row label="Expected Return"    value={`${r.annual_return_rate}% p.a.`} />
+        <Row label="Wealth Gained"      value={`${r.wealth_gained_percent}%`} />
         <p style={disclaimer}>{data.disclaimer}</p>
       </div>
     );
@@ -35,14 +35,13 @@ export default function ResultCard({ data, type }) {
             ? "✅ Corpus survives the full withdrawal period!"
             : "⚠️ Corpus gets exhausted before the period ends."}
         </div>
-        <Row label="Starting Corpus"     value={fmt(r.corpus_amount)} />
-        <Row label="Monthly Withdrawal"  value={fmt(r.monthly_withdrawal)} />
-        <Row label="Annual Return"       value={`${r.annual_return_rate}% p.a.`} />
-        <Row label="Duration"            value={`${r.duration_years} Years`} />
-        <Row label="Total Withdrawn"     value={fmt(r.total_withdrawn)} color="#2e7d32" />
-        <Row label="Final Balance"       value={fmt(r.final_balance)}
+        <Row label="Starting Corpus"    value={fmt(r.corpus_amount)} />
+        <Row label="Monthly Withdrawal" value={fmt(r.monthly_withdrawal)} />
+        <Row label="Annual Return"      value={`${r.annual_return_rate}% p.a.`} />
+        <Row label="Duration"           value={`${r.duration_years} Years`} />
+        <Row label="Total Withdrawn"    value={fmt(r.total_withdrawn)} color="#2e7d32" />
+        <Row label="Final Balance"      value={fmt(r.final_balance)}
              color={r.final_balance > 0 ? "#2e7d32" : "#c0392b"} />
-
         {r.yearly_breakdown?.length > 0 && (
           <>
             <h3 style={tableTitle}>📅 Yearly Breakdown</h3>
@@ -79,20 +78,17 @@ export default function ResultCard({ data, type }) {
     return (
       <div style={card}>
         <h2 style={heading}>🏛️ PPF Result</h2>
-        <div style={successBox}>
-          🏛️ {r.tax_benefit}
-        </div>
+        <div style={successBox}>🏛️ {r.tax_benefit}</div>
         <div style={highlightBox}>
           <div style={highlightLabel}>Maturity Amount</div>
           <div style={highlightValue}>{fmt(r.maturity_amount)}</div>
         </div>
-        <Row label="Annual Investment"   value={fmt(r.annual_investment)} />
-        <Row label="Duration"            value={`${r.duration_years} Years`} />
-        <Row label="Interest Rate"       value={`${r.interest_rate}% p.a.`} />
-        <Row label="Total Invested"      value={fmt(r.total_invested)} />
-        <Row label="Estimated Returns"   value={fmt(r.estimated_returns)} color="#2e7d32" />
-        <Row label="Wealth Gained"       value={`${r.wealth_gained_percent}%`} />
-
+        <Row label="Annual Investment"  value={fmt(r.annual_investment)} />
+        <Row label="Duration"           value={`${r.duration_years} Years`} />
+        <Row label="Interest Rate"      value={`${r.interest_rate}% p.a.`} />
+        <Row label="Total Invested"     value={fmt(r.total_invested)} />
+        <Row label="Estimated Returns"  value={fmt(r.estimated_returns)} color="#2e7d32" />
+        <Row label="Wealth Gained"      value={`${r.wealth_gained_percent}%`} />
         {r.yearly_breakdown?.length > 0 && (
           <>
             <h3 style={tableTitle}>📅 Yearly Breakdown</h3>
@@ -133,31 +129,30 @@ export default function ResultCard({ data, type }) {
           <div style={highlightLabel}>💰 Total Maturity Amount</div>
           <div style={highlightValue}>{fmt(r.total_maturity)}</div>
         </div>
-
         <div style={{ display: "flex", gap: "1rem", margin: "1rem 0", flexWrap: "wrap" }}>
           <div style={miniCard}>
-            <div style={miniLabel}>💰 Lumpsum Maturity</div>
+            <div style={miniLabel}>💰 Lumpsum</div>
             <div style={miniValue}>{fmt(r.lumpsum_maturity)}</div>
             <div style={miniSub}>Invested: {fmt(r.lumpsum_invested)}</div>
             <div style={miniSub}>Gains: {fmt(r.lumpsum_gains)}</div>
           </div>
           <div style={miniCard}>
-            <div style={miniLabel}>📅 SIP Maturity</div>
+            <div style={miniLabel}>📅 SIP</div>
             <div style={miniValue}>{fmt(r.sip_maturity)}</div>
             <div style={miniSub}>Invested: {fmt(r.sip_invested)}</div>
             <div style={miniSub}>Gains: {fmt(r.sip_gains)}</div>
           </div>
         </div>
-
-        <Row label="Total Invested"      value={fmt(r.total_invested)} />
-        <Row label="Total Gains"         value={fmt(r.total_gains)} color="#2e7d32" />
-        <Row label="Wealth Gained"       value={`${r.wealth_gained_percent}%`} />
-        <Row label="Annual Return"       value={`${r.annual_return_rate}% p.a.`} />
-        <Row label="Duration"            value={`${r.duration_years} Years`} />
+        <Row label="Total Invested"  value={fmt(r.total_invested)} />
+        <Row label="Total Gains"     value={fmt(r.total_gains)} color="#2e7d32" />
+        <Row label="Wealth Gained"   value={`${r.wealth_gained_percent}%`} />
+        <Row label="Annual Return"   value={`${r.annual_return_rate}% p.a.`} />
+        <Row label="Duration"        value={`${r.duration_years} Years`} />
         <p style={disclaimer}>{data.disclaimer}</p>
       </div>
     );
   }
+
   // ── COMPARE ───────────────────────────────────────
   if (type === "Compare") {
     return (
@@ -234,7 +229,6 @@ export default function ResultCard({ data, type }) {
       <Row label="Total Invested"    value={fmt(r.total_invested)} />
       <Row label="Estimated Returns" value={fmt(r.estimated_returns)} color="#2e7d32" />
       <Row label="Wealth Gained"     value={`${r.wealth_gained_percent}%`} />
-
       {data.yearly_breakdown?.length > 0 && (
         <>
           <h3 style={tableTitle}>📅 Yearly Breakdown</h3>
@@ -267,7 +261,6 @@ export default function ResultCard({ data, type }) {
   );
 }
 
-// ── Reusable Row Component ─────────────────────────
 function Row({ label, value, color }) {
   return (
     <div style={resultRow}>
@@ -278,21 +271,21 @@ function Row({ label, value, color }) {
 }
 
 // ── TrueMFD Brand Styles ───────────────────────────
-const card         = { background: "#fff", borderRadius: "16px", padding: "1.5rem", boxShadow: "0 4px 20px rgba(75,52,37,0.10)", border: "1px solid #DDD1C2" };
-const heading      = { marginTop: 0, color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.3rem" };
-const resultRow    = { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.65rem 0", borderBottom: "1px solid #F4EFE8" };
-const highlightBox = { background: "linear-gradient(135deg, #4B3425, #2E221B)", borderRadius: "12px", padding: "1.2rem", textAlign: "center", margin: "1rem 0" };
+const card          = { background: "#fff", borderRadius: "16px", padding: "1.5rem", boxShadow: "0 4px 20px rgba(75,52,37,0.10)", border: "1px solid #DDD1C2" };
+const heading       = { marginTop: 0, color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.3rem" };
+const resultRow     = { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.65rem 0", borderBottom: "1px solid #F4EFE8" };
+const highlightBox  = { background: "linear-gradient(135deg, #4B3425, #2E221B)", borderRadius: "12px", padding: "1.2rem", textAlign: "center", margin: "1rem 0" };
 const highlightLabel = { color: "#B08D57", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.5px" };
 const highlightValue = { color: "#F4EFE8", fontSize: "1.8rem", fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", marginTop: "0.3rem" };
-const tableTitle   = { color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif", marginTop: "1.5rem", fontSize: "1rem" };
-const table        = { width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" };
-const th           = { background: "#4B3425", color: "#B08D57", padding: "0.6rem 0.8rem", textAlign: "left", fontFamily: "'Lato', sans-serif" };
-const td           = { padding: "0.5rem 0.8rem", borderBottom: "1px solid #F4EFE8", color: "#2E221B" };
-const successBox   = { background: "#e8f5e9", borderRadius: "10px", padding: "0.8rem 1rem", margin: "0.8rem 0", color: "#2e7d32", fontSize: "0.88rem" };
-const warningBox   = { background: "#fff3e0", borderRadius: "10px", padding: "0.8rem 1rem", margin: "0.8rem 0", color: "#e65100", fontSize: "0.88rem" };
-const winnerBox    = { background: "linear-gradient(135deg,#F4EFE8,#DDD1C2)", borderRadius: "10px", padding: "1rem", margin: "1rem 0", color: "#4B3425" };
-const disclaimer   = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "1rem", lineHeight: 1.5 const miniCard  = { flex: "1 1 140px", background: "#F4EFE8", borderRadius: "10px", padding: "0.8rem", textAlign: "center" };
-const miniLabel = { fontSize: "0.75rem", color: "#B08D57", fontWeight: 700, marginBottom: "0.3rem" };
-const miniValue = { fontSize: "1.1rem", fontWeight: 700, color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif" };
-const miniSub   = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "0.2rem" };
-};
+const tableTitle    = { color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif", marginTop: "1.5rem", fontSize: "1rem" };
+const table         = { width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" };
+const th            = { background: "#4B3425", color: "#B08D57", padding: "0.6rem 0.8rem", textAlign: "left", fontFamily: "'Lato', sans-serif" };
+const td            = { padding: "0.5rem 0.8rem", borderBottom: "1px solid #F4EFE8", color: "#2E221B" };
+const successBox    = { background: "#e8f5e9", borderRadius: "10px", padding: "0.8rem 1rem", margin: "0.8rem 0", color: "#2e7d32", fontSize: "0.88rem" };
+const warningBox    = { background: "#fff3e0", borderRadius: "10px", padding: "0.8rem 1rem", margin: "0.8rem 0", color: "#e65100", fontSize: "0.88rem" };
+const winnerBox     = { background: "linear-gradient(135deg,#F4EFE8,#DDD1C2)", borderRadius: "10px", padding: "1rem", margin: "1rem 0", color: "#4B3425" };
+const miniCard      = { flex: "1 1 140px", background: "#F4EFE8", borderRadius: "10px", padding: "0.8rem", textAlign: "center" };
+const miniLabel     = { fontSize: "0.75rem", color: "#B08D57", fontWeight: 700, marginBottom: "0.3rem" };
+const miniValue     = { fontSize: "1.1rem", fontWeight: 700, color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif" };
+const miniSub       = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "0.2rem" };
+const disclaimer    = { fontSize: "0.72rem", color: "#A59A8A", marginTop: "1rem", lineHeight: 1.5 };
