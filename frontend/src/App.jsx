@@ -1,342 +1,298 @@
-import React, { useState, useEffect } from 'react';
-import SIPForm from './components/SIPForm';
-import StepUpForm from './components/StepUpForm';
-import LumpsumForm from './components/LumpsumForm';
-import GoalSIPForm from './components/GoalSIPForm';
-import SWPForm from './components/SWPForm';
-import PPFForm from './components/PPFForm';
-import SIPLumpsumForm from './components/SIPLumpsumForm';
-import CompareForm from './components/CompareForm';
-import XIRRForm from './components/XIRRForm';
-import ResultCard from './components/ResultCard';
-
-const BRAND = {
-  walnut: '#4B3425',
-  espresso: '#2E221B',
-  gold: '#B08D57',
-  ivory: '#F4EFE8',
-  beige: '#DDD1C2',
-  stone: '#A59A8A',
-};
+import React, { useState } from "react";
+import SIPForm        from "./components/SIPForm";
+import StepUpForm     from "./components/StepUpForm";
+import LumpsumForm    from "./components/LumpsumForm";
+import CompareForm    from "./components/CompareForm";
+import XIRRForm       from "./components/XIRRForm";
+import GoalSIPForm    from "./components/GoalSIPForm";
+import SWPForm        from "./components/SWPForm";
+import PPFForm        from "./components/PPFForm";
+import SIPLumpsumForm from "./components/SIPLumpsumForm";
+import ResultCard     from "./components/ResultCard";
 
 const TABS = [
-  { id: 'sip', label: 'SIP', icon: '📈' },
-  { id: 'stepup', label: 'Step-Up', icon: '📊' },
-  { id: 'lumpsum', label: 'Lumpsum', icon: '💵' },
-  { id: 'goal', label: 'Goal SIP', icon: '🎯' },
-  { id: 'swp', label: 'SWP', icon: '💸' },
-  { id: 'ppf', label: 'PPF', icon: '🏦' },
-  { id: 'siplump', label: 'SIP+Lump', icon: '🔀' },
-  { id: 'compare', label: 'Compare', icon: '⚖️' },
-  { id: 'xirr', label: 'XIRR', icon: '📐' },
+  { id: "SIP",           label: "📈 SIP",          desc: "Systematic Investment Plan" },
+  { id: "Step-Up SIP",   label: "📊 Step-Up SIP",   desc: "Increasing SIP every year" },
+  { id: "Lumpsum",       label: "💰 Lumpsum",       desc: "One-time investment" },
+  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",   desc: "Combined SIP & Lumpsum" },
+  { id: "Goal SIP",      label: "🎯 Goal SIP",      desc: "Target-based planning" },
+  { id: "SWP",           label: "🔄 SWP",           desc: "Systematic Withdrawal" },
+  { id: "PPF",           label: "🏛️ PPF",           desc: "Public Provident Fund" },
+  { id: "Compare",       label: "⚖️ Compare",       desc: "SIP vs Lumpsum" },
+  { id: "XIRR",          label: "📐 XIRR",          desc: "Actual returns calculator" },
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('sip');
-  const [result, setResult] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [activeTab, setActiveTab] = useState("SIP");
+  const [result,    setResult]    = useState(null);
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const renderForm = () => {
-    
-    switch (activeTab) {
-      case 'sip': return <SIPForm onResult={setResult} />;
-      case 'stepup': return <StepUpForm onResult={setResult} />;
-      case 'lumpsum': return <LumpsumForm onResult={setResult} />;
-      case 'goal': return <GoalSIPForm onResult={setResult} />;
-      case 'swp': return <SWPForm onResult={setResult} />;
-      case 'ppf': return <PPFForm onResult={setResult} />;
-      case 'siplump': return <SIPLumpsumForm onResult={setResult} />;
-      case 'compare': return <CompareForm onResult={setResult} />;
-      case 'xirr': return <XIRRForm onResult={setResult} />;
-      default: return <SIPForm onResult={setResult} />;
-    }
-  };
+  const activeDesc = TABS.find(t => t.id === activeTab)?.desc;
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: BRAND.ivory,
-      fontFamily: "'Lato', sans-serif",
-      color: BRAND.espresso,
-    }}>
+    <div style={styles.app}>
+
       {/* HEADER */}
-      <header style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        background: `linear-gradient(135deg, ${BRAND.walnut} 0%, ${BRAND.espresso} 100%)`,
-        color: BRAND.ivory,
-        padding: isMobile ? '12px 16px' : '20px 40px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-      }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          maxWidth: 1200,
-          margin: '0 auto',
-        }}>
-          <div>
-            <h1 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: isMobile ? '20px' : '28px',
-              margin: 0,
-              color: BRAND.gold,
-              letterSpacing: '0.5px',
-            }}>
-              TrueMFD
-            </h1>
-            <p style={{
-              margin: 0,
-              fontSize: isMobile ? '11px' : '13px',
-              color: BRAND.beige,
-              letterSpacing: '1px',
-            }}>
-              Calculator Suite
-            </p>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{
-              fontSize: isMobile ? '10px' : '12px',
-              color: BRAND.beige,
-              opacity: 0.8,
-            }}>
-              ARN-2213
-            </div>
-            <div style={{
-              fontSize: isMobile ? '9px' : '11px',
-              color: BRAND.stone,
-            }}>
-              EUIN E073190
+      <header style={styles.header}>
+        <div style={styles.headerInner}>
+          <div style={styles.logoWrap}>
+            <div style={styles.logoCircle}>T</div>
+            <div>
+              <div style={styles.logoText}>
+                True<span style={styles.logoMFD}>MFD</span>
+              </div>
+              <div style={styles.logoSub}>AMFI Registered Mutual Fund Distributor</div>
             </div>
           </div>
+          <div style={styles.headerRight}>
+            <div style={styles.arnBadge}>ARN-2213 | EUIN-E073190</div>
+            <div style={styles.headerTagline}>
+              Guiding families with clarity and care
+            </div>
+          </div>
+        </div>
+        <div style={styles.heroText}>
+          <h1 style={styles.heroTitle}>Investment Calculator Suite</h1>
+          <p style={styles.heroSub}>
+            Plan your SIP, Lumpsum, Goal, SWP, PPF and more
+          </p>
         </div>
       </header>
 
       {/* TAB BAR */}
-      <nav style={{
-        position: 'sticky',
-        top: isMobile ? 64 : 92,
-        zIndex: 99,
-        backgroundColor: BRAND.beige,
-        borderBottom: `2px solid ${BRAND.gold}`,
-        overflowX: 'auto',
-        whiteSpace: 'nowrap',
-        WebkitOverflowScrolling: 'touch',
-        scrollbarWidth: 'none',
-      }}>
-        <div style={{
-          display: 'inline-flex',
-          padding: '8px',
-          gap: '4px',
-        }}>
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => { setActiveTab(tab.id); setResult(null); }}
-              style={{
-                background: activeTab === tab.id ? BRAND.walnut : 'transparent',
-                color: activeTab === tab.id ? BRAND.ivory : BRAND.espresso,
-                border: `1px solid ${activeTab === tab.id ? BRAND.walnut : BRAND.stone}`,
-                borderRadius: '20px',
-                padding: isMobile ? '8px 14px' : '10px 18px',
-                fontSize: isMobile ? '13px' : '14px',
-                fontWeight: activeTab === tab.id ? 700 : 500,
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                fontFamily: "'Lato', sans-serif",
-                whiteSpace: 'nowrap',
-                minHeight: '40px',
-              }}
-            >
-              <span style={{ marginRight: 6 }}>{tab.icon}</span>
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </nav>
+      <div style={styles.tabBar}>
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => { setActiveTab(tab.id); setResult(null); }}
+            style={{
+              ...styles.tab,
+              ...(activeTab === tab.id ? styles.tabActive : {})
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* TAB DESCRIPTION */}
+      <div style={styles.tabDesc}>{activeDesc}</div>
 
       {/* MAIN CONTENT */}
-      <main style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: isMobile ? '16px' : '32px 40px',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-        gap: isMobile ? '16px' : '24px',
-      }}>
-        {/* FORM PANEL */}
-        <section style={{
-          backgroundColor: '#fff',
-          padding: isMobile ? '20px' : '32px',
-          borderRadius: '12px',
-          boxShadow: '0 2px 12px rgba(75,52,37,0.08)',
-          border: `1px solid ${BRAND.beige}`,
-        }}>
-          {renderForm()}
-        </section>
-
-        {/* RESULT PANEL */}
-        <section style={{
-          backgroundColor: result ? '#fff' : BRAND.beige,
-          padding: isMobile ? '20px' : '32px',
-          borderRadius: '12px',
-          boxShadow: '0 2px 12px rgba(75,52,37,0.08)',
-          border: `1px solid ${BRAND.beige}`,
-          minHeight: isMobile ? 'auto' : '300px',
-        }}>
-          {result ? (
-            <ResultCard result={result} type={activeTab} />
-          ) : (
-            <div style={{
-              textAlign: 'center',
-              color: BRAND.stone,
-              padding: '40px 20px',
-            }}>
-              <div style={{ fontSize: '48px', marginBottom: '12px' }}>💼</div>
-              <p style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: '18px',
-                color: BRAND.walnut,
-                margin: 0,
-              }}>
-                Fill the form to see results
-              </p>
-              <p style={{ fontSize: '13px', marginTop: 8 }}>
-                Your projection appears here
-              </p>
-            </div>
-          )}
-        </section>
-      </main>
-
-      {/* DISCLAIMER */}
-      <div style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: isMobile ? '0 16px 16px' : '0 40px 24px',
-      }}>
-        <p style={{
-          fontSize: '11px',
-          color: BRAND.stone,
-          fontStyle: 'italic',
-          textAlign: 'center',
-          lineHeight: 1.5,
-          margin: 0,
-        }}>
-          ⚠️ Mutual fund investments are subject to market risks. Read all
-          scheme-related documents carefully. Past performance is not indicative
-          of future returns.
-        </p>
+      <div style={styles.content}>
+        <div style={styles.formPanel}>
+          {activeTab === "SIP"           && <SIPForm        onResult={setResult} />}
+          {activeTab === "Step-Up SIP"   && <StepUpForm     onResult={setResult} />}
+          {activeTab === "Lumpsum"       && <LumpsumForm    onResult={setResult} />}
+          {activeTab === "SIP + Lumpsum" && <SIPLumpsumForm onResult={setResult} />}
+          {activeTab === "Goal SIP"      && <GoalSIPForm    onResult={setResult} />}
+          {activeTab === "SWP"           && <SWPForm        onResult={setResult} />}
+          {activeTab === "PPF"           && <PPFForm        onResult={setResult} />}
+          {activeTab === "Compare"       && <CompareForm    onResult={setResult} />}
+          {activeTab === "XIRR"          && <XIRRForm       onResult={setResult} />}
+        </div>
+        {result && (
+          <div style={styles.resultPanel}>
+            <ResultCard data={result} type={activeTab} />
+          </div>
+        )}
       </div>
 
       {/* FOOTER */}
-      <footer style={{
-        background: `linear-gradient(135deg, ${BRAND.espresso} 0%, ${BRAND.walnut} 100%)`,
-        color: BRAND.ivory,
-        padding: isMobile ? '20px 16px' : '32px 40px',
-        marginTop: '24px',
-      }}>
-        <div style={{
-          maxWidth: 1200,
-          margin: '0 auto',
-          display: isMobile ? 'block' : 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '16px',
-        }}>
-          <div style={{ marginBottom: isMobile ? 16 : 0 }}>
-            <h3 style={{
-              fontFamily: "'Playfair Display', serif",
-              color: BRAND.gold,
-              margin: '0 0 4px 0',
-              fontSize: isMobile ? '18px' : '22px',
-            }}>
-              True Mutual Fund Distributor
-            </h3>
-            <p style={{
-              margin: 0,
-              fontSize: '12px',
-              color: BRAND.beige,
-              fontStyle: 'italic',
-            }}>
-              Guiding families with clarity and care
-            </p>
+      <footer style={styles.footer}>
+        <div style={styles.footerInner}>
+          <div style={styles.footerBrand}>
+            True Mutual Fund Distributor
           </div>
-
-          <div style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-            gap: isMobile ? '10px' : '20px',
-            fontSize: '13px',
-          }}>
-            <a
-              href="tel:9822204877"
-              style={{
-                color: BRAND.ivory,
-                textDecoration: 'none',
-                padding: isMobile ? '12px 16px' : '8px 14px',
-                backgroundColor: 'rgba(176,141,87,0.2)',
-                border: `1px solid ${BRAND.gold}`,
-                borderRadius: '6px',
-                display: 'inline-block',
-                textAlign: 'center',
-              }}
-            >
-              📞 9822204877
-            </a>
-            <a
-              href="mailto:nadim@truemfd.com"
-              style={{
-                color: BRAND.ivory,
-                textDecoration: 'none',
-                padding: isMobile ? '12px 16px' : '8px 14px',
-                backgroundColor: 'rgba(176,141,87,0.2)',
-                border: `1px solid ${BRAND.gold}`,
-                borderRadius: '6px',
-                display: 'inline-block',
-                textAlign: 'center',
-              }}
-            >
-              ✉️ Email Us
-            </a>
-            <a
-              href="https://www.truemfd.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: BRAND.ivory,
-                textDecoration: 'none',
-                padding: isMobile ? '12px 16px' : '8px 14px',
-                backgroundColor: 'rgba(176,141,87,0.2)',
-                border: `1px solid ${BRAND.gold}`,
-                borderRadius: '6px',
-                display: 'inline-block',
-                textAlign: 'center',
-              }}
-            >
-              🌐 truemfd.com
-            </a>
+          <div style={styles.footerDetails}>
+            Nadim Sarfraz Husain | ARN-2213 | EUIN-E073190 |
+            9822204877 / 9284731200 | www.truemfd.com
           </div>
-        </div>
-
-        <div style={{
-          textAlign: 'center',
-          marginTop: '20px',
-          paddingTop: '16px',
-          borderTop: `1px solid ${BRAND.stone}`,
-          fontSize: '11px',
-          color: BRAND.stone,
-        }}>
-          © {new Date().getFullYear()} TrueMFD · Nagpur · ARN-2213 · EUIN E073190
+          <div style={styles.footerAddress}>
+            Block No. 108, 1st Floor, Haakim Arcade,
+            Dharampeth Coffee House Square, Nagpur - 440010
+          </div>
+          <div style={styles.footerDisclaimer}>
+            Mutual Fund investments are subject to market risks.
+            Returns shown are illustrative and not guaranteed.
+            Read all scheme related documents carefully before investing.
+          </div>
         </div>
       </footer>
     </div>
   );
 }
+
+const styles = {
+  app: {
+    fontFamily: "'Lato', 'Segoe UI', sans-serif",
+    minHeight:  "100vh",
+    background: "#F4EFE8",
+  },
+  header: {
+    background: "linear-gradient(135deg, #2E221B 0%, #4B3425 100%)",
+    color:      "#F4EFE8",
+    padding:    "1.5rem 2rem 2rem",
+  },
+  headerInner: {
+    display:        "flex",
+    justifyContent: "space-between",
+    alignItems:     "center",
+    flexWrap:       "wrap",
+    gap:            "1rem",
+    maxWidth:       "1100px",
+    margin:         "0 auto",
+  },
+  logoWrap: {
+    display:    "flex",
+    alignItems: "center",
+    gap:        "0.8rem",
+  },
+  logoCircle: {
+    width:          "48px",
+    height:         "48px",
+    borderRadius:   "50%",
+    background:     "linear-gradient(135deg, #B08D57, #8B6914)",
+    display:        "flex",
+    alignItems:     "center",
+    justifyContent: "center",
+    fontSize:       "1.4rem",
+    fontWeight:     700,
+    color:          "#fff",
+    fontFamily:     "'Playfair Display', Georgia, serif",
+    border:         "2px solid #B08D57",
+  },
+  logoText: {
+    fontSize:   "1.6rem",
+    fontWeight: 700,
+    fontFamily: "'Playfair Display', Georgia, serif",
+    color:      "#F4EFE8",
+    lineHeight: 1.2,
+  },
+  logoMFD: {
+    color: "#B08D57",
+  },
+  logoSub: {
+    fontSize:      "0.65rem",
+    color:         "#A59A8A",
+    letterSpacing: "0.5px",
+  },
+  headerRight: {
+    textAlign: "right",
+  },
+  arnBadge: {
+    background:   "rgba(176,141,87,0.2)",
+    border:       "1px solid #B08D57",
+    borderRadius: "20px",
+    padding:      "0.3rem 0.9rem",
+    fontSize:     "0.8rem",
+    color:        "#B08D57",
+    fontWeight:   700,
+    display:      "inline-block",
+  },
+  headerTagline: {
+    fontSize:  "0.78rem",
+    color:     "#DDD1C2",
+    marginTop: "0.4rem",
+    fontStyle: "italic",
+  },
+  heroText: {
+    textAlign: "center",
+    marginTop: "1.5rem",
+    maxWidth:  "1100px",
+    margin:    "1.5rem auto 0",
+  },
+  heroTitle: {
+    margin:     0,
+    fontSize:   "2rem",
+    fontWeight: 700,
+    fontFamily: "'Playfair Display', Georgia, serif",
+    color:      "#F4EFE8",
+  },
+  heroSub: {
+    margin:   "0.5rem 0 0",
+    color:    "#DDD1C2",
+    fontSize: "0.95rem",
+  },
+  tabBar: {
+    display:        "flex",
+    justifyContent: "center",
+    flexWrap:       "wrap",
+    gap:            "0.5rem",
+    padding:        "1.2rem 1rem",
+    background:     "#fff",
+    boxShadow:      "0 2px 12px rgba(75,52,37,0.10)",
+    position:       "sticky",
+    top:            0,
+    zIndex:         100,
+  },
+  tab: {
+    padding:      "0.5rem 1.1rem",
+    border:       "2px solid #DDD1C2",
+    borderRadius: "25px",
+    background:   "#fff",
+    cursor:       "pointer",
+    fontWeight:   600,
+    color:        "#4B3425",
+    fontSize:     "0.85rem",
+    fontFamily:   "'Lato', sans-serif",
+    transition:   "all 0.2s",
+  },
+  tabActive: {
+    background:  "linear-gradient(135deg, #4B3425, #2E221B)",
+    color:       "#B08D57",
+    borderColor: "#4B3425",
+  },
+  tabDesc: {
+    textAlign:  "center",
+    padding:    "0.6rem",
+    fontSize:   "0.85rem",
+    color:      "#A59A8A",
+    background: "#F4EFE8",
+    fontStyle:  "italic",
+  },
+  content: {
+    display:   "flex",
+    flexWrap:  "wrap",
+    gap:       "1.5rem",
+    padding:   "1.5rem",
+    maxWidth:  "1100px",
+    margin:    "0 auto",
+  },
+  formPanel:   { flex: "1 1 380px" },
+  resultPanel: { flex: "1 1 380px" },
+  footer: {
+    background: "#2E221B",
+    color:      "#DDD1C2",
+    marginTop:  "2rem",
+    padding:    "2rem",
+  },
+  footerInner: {
+    maxWidth:  "1100px",
+    margin:    "0 auto",
+    textAlign: "center",
+  },
+  footerBrand: {
+    color:        "#B08D57",
+    fontSize:     "1rem",
+    fontFamily:   "'Playfair Display', Georgia, serif",
+    marginBottom: "0.5rem",
+    fontWeight:   700,
+  },
+  footerDetails: {
+    fontSize:     "0.82rem",
+    marginBottom: "0.4rem",
+    color:        "#DDD1C2",
+  },
+  footerAddress: {
+    fontSize:     "0.78rem",
+    color:        "#A59A8A",
+    marginBottom: "0.8rem",
+  },
+  footerDisclaimer: {
+    fontSize:     "0.72rem",
+    color:        "#A59A8A",
+    borderTop:    "1px solid #4B3425",
+    paddingTop:   "0.8rem",
+    marginTop:    "0.8rem",
+  },
+};
