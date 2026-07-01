@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import SIPForm        from "./components/SIPForm";
-import StepUpForm     from "./components/StepUpForm";
-import LumpsumForm    from "./components/LumpsumForm";
-import CompareForm    from "./components/CompareForm";
-import XIRRForm       from "./components/XIRRForm";
-import GoalSIPForm    from "./components/GoalSIPForm";
-import SWPForm        from "./components/SWPForm";
-import PPFForm        from "./components/PPFForm";
-import SIPLumpsumForm from "./components/SIPLumpsumForm";
-import ResultCard     from "./components/ResultCard";
+import SIPForm          from "./components/SIPForm";
+import StepUpForm       from "./components/StepUpForm";
+import LumpsumForm      from "./components/LumpsumForm";
+import CompareForm      from "./components/CompareForm";
+import XIRRForm         from "./components/XIRRForm";
+import GoalSIPForm      from "./components/GoalSIPForm";
+import SWPForm          from "./components/SWPForm";
+import PPFForm          from "./components/PPFForm";
+import SIPLumpsumForm   from "./components/SIPLumpsumForm";
+import ResultCard       from "./components/ResultCard";
 
 const TABS = [
   { id: "SIP",           label: "📈 SIP",          desc: "Systematic Investment Plan" },
   { id: "Step-Up SIP",   label: "📊 Step-Up SIP",  desc: "Increasing SIP every year" },
   { id: "Lumpsum",       label: "💰 Lumpsum",       desc: "One-time investment" },
-  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",  desc: "Combined SIP & Lumpsum investment" },
+  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",   desc: "Combined SIP & Lumpsum" },
   { id: "Goal SIP",      label: "🎯 Goal SIP",      desc: "Target-based planning" },
-  { id: "SWP",           label: "🔄 SWP",           desc: "Systematic Withdrawal Plan" },
+  { id: "SWP",           label: "🔄 SWP",           desc: "Systematic Withdrawal" },
   { id: "PPF",           label: "🏛️ PPF",           desc: "Public Provident Fund" },
   { id: "Compare",       label: "⚖️ Compare",       desc: "SIP vs Lumpsum" },
   { id: "XIRR",          label: "📐 XIRR",          desc: "Actual returns calculator" },
@@ -31,7 +31,7 @@ export default function App() {
   return (
     <div style={styles.app}>
 
-      {/* ── HEADER ── */}
+      {/* HEADER */}
       <header style={styles.header}>
         <div style={styles.headerInner}>
           <div style={styles.logoWrap}>
@@ -58,7 +58,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* ── TAB BAR ── */}
+      {/* TAB BAR */}
       <div style={styles.tabBar}>
         {TABS.map((tab) => (
           <button
@@ -74,21 +74,21 @@ export default function App() {
         ))}
       </div>
 
-      {/* ── TAB DESCRIPTION ── */}
+      {/* TAB DESCRIPTION */}
       <div style={styles.tabDesc}>{activeDesc}</div>
 
-      {/* ── MAIN CONTENT ── */}
+      {/* MAIN CONTENT */}
       <div style={styles.content}>
         <div style={styles.formPanel}>
-          {activeTab === "SIP"           && <SIPForm        onResult={setResult} />}
-          {activeTab === "Step-Up SIP"   && <StepUpForm     onResult={setResult} />}
-          {activeTab === "Lumpsum"       && <LumpsumForm    onResult={setResult} />}
-          {activeTab === "SIP + Lumpsum" && <SIPLumpsumForm onResult={setResult} />}
-          {activeTab === "Goal SIP"      && <GoalSIPForm    onResult={setResult} />}
-          {activeTab === "SWP"           && <SWPForm        onResult={setResult} />}
-          {activeTab === "PPF"           && <PPFForm        onResult={setResult} />}
-          {activeTab === "Compare"       && <CompareForm    onResult={setResult} />}
-          {activeTab === "XIRR"          && <XIRRForm       onResult={setResult} />}
+          {activeTab === "SIP"           && <SIPForm          onResult={setResult} />}
+          {activeTab === "Step-Up SIP"   && <StepUpForm       onResult={setResult} />}
+          {activeTab === "Lumpsum"       && <LumpsumForm      onResult={setResult} />}
+          {activeTab === "SIP + Lumpsum" && <SIPLumpsumForm   onResult={setResult} />}
+          {activeTab === "Goal SIP"      && <GoalSIPForm      onResult={setResult} />}
+          {activeTab === "SWP"           && <SWPForm          onResult={setResult} />}
+          {activeTab === "PPF"           && <PPFForm          onResult={setResult} />}
+          {activeTab === "Compare"       && <CompareForm      onResult={setResult} />}
+          {activeTab === "XIRR"          && <XIRRForm         onResult={setResult} />}
         </div>
         {result && (
           <div style={styles.resultPanel}>
@@ -97,7 +97,7 @@ export default function App() {
         )}
       </div>
 
-      {/* ── FOOTER ── */}
+      {/* FOOTER */}
       <footer style={styles.footer}>
         <div style={styles.footerInner}>
           <div style={styles.footerBrand}>
@@ -160,7 +160,6 @@ const styles = {
     fontWeight:     700,
     color:          "#fff",
     fontFamily:     "'Playfair Display', Georgia, serif",
-    border:         "2px solid #B08D57",
   },
   logoText: {
     fontSize:   "1.6rem",
@@ -235,7 +234,6 @@ const styles = {
     color:        "#4B3425",
     fontSize:     "0.85rem",
     fontFamily:   "'Lato', sans-serif",
-    transition:   "all 0.2s",
   },
   tabActive: {
     background:  "linear-gradient(135deg, #4B3425, #2E221B)",
@@ -289,10 +287,10 @@ const styles = {
     marginBottom: "0.8rem",
   },
   footerDisclaimer: {
-    fontSize:   "0.72rem",
-    color:      "#A59A8A",
-    borderTop:  "1px solid #4B3425",
-    paddingTop: "0.8rem",
-    marginTop:  "0.8rem",
+    fontSize:     "0.72rem",
+    color:        "#A59A8A",
+    borderTop:    "1px solid #4B3425",
+    paddingTop:   "0.8rem",
+    marginTop:    "0.8rem",
   },
 };
