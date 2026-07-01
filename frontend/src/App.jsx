@@ -31,7 +31,6 @@ export default function App() {
   return (
     <div style={styles.app}>
 
-      {/* HEADER */}
       <header style={styles.header}>
         <div style={styles.headerInner}>
           <div style={styles.logoWrap}>
@@ -58,7 +57,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* TAB BAR */}
       <div style={styles.tabBar}>
         {TABS.map((tab) => (
           <button
@@ -74,10 +72,8 @@ export default function App() {
         ))}
       </div>
 
-      {/* TAB DESCRIPTION */}
       <div style={styles.tabDesc}>{activeDesc}</div>
 
-      {/* MAIN CONTENT */}
       <div style={styles.content}>
         <div style={styles.formPanel}>
           {activeTab === "SIP"           && <SIPForm        onResult={setResult} />}
@@ -97,15 +93,14 @@ export default function App() {
         )}
       </div>
 
-      {/* FOOTER */}
       <footer style={styles.footer}>
         <div style={styles.footerInner}>
           <div style={styles.footerBrand}>
-            True Mutual Fund Distributor
+            TrueMFD — True Mutual Fund Distributor
           </div>
           <div style={styles.footerDetails}>
-            Nadim Sarfraz Husain | ARN-2213 | EUIN-E073190 |
-            9822204877 / 9284731200 | www.truemfd.com
+            Nadim Sarfraz Husain | ARN-2213 | EUIN-E073190
+            | 9822204877 / 9284731200 | www.truemfd.com
           </div>
           <div style={styles.footerAddress}>
             Block No. 108, 1st Floor, Haakim Arcade,
@@ -118,6 +113,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+
     </div>
   );
 }
@@ -148,18 +144,18 @@ const styles = {
     gap:        "0.8rem",
   },
   logoCircle: {
-    width:          "48px",
-    height:         "48px",
-    borderRadius:   "50%",
-    background:     "linear-gradient(135deg, #B08D57, #8B6914)",
-    display:        "flex",
-    alignItems:     "center",
-    justifyContent: "center",
-    fontSize:       "1.4rem",
-    fontWeight:     700,
-    color:          "#fff",
-    fontFamily:     "'Playfair Display', Georgia, serif",
-    border:         "2px solid #B08D57",
+    width:         "48px",
+    height:        "48px",
+    borderRadius:  "50%",
+    background:    "linear-gradient(135deg, #B08D57, #8B6914)",
+    display:       "flex",
+    alignItems:    "center",
+    justifyContent:"center",
+    fontSize:      "1.4rem",
+    fontWeight:    700,
+    color:         "#fff",
+    fontFamily:    "'Playfair Display', Georgia, serif",
+    border:        "2px solid #B08D57",
   },
   logoText: {
     fontSize:   "1.6rem",
@@ -197,7 +193,6 @@ const styles = {
   },
   heroText: {
     textAlign: "center",
-    marginTop: "1.5rem",
     maxWidth:  "1100px",
     margin:    "1.5rem auto 0",
   },
@@ -235,7 +230,6 @@ const styles = {
     color:        "#4B3425",
     fontSize:     "0.85rem",
     fontFamily:   "'Lato', sans-serif",
-    transition:   "all 0.2s",
   },
   tabActive: {
     background:  "linear-gradient(135deg, #4B3425, #2E221B)",
@@ -251,12 +245,12 @@ const styles = {
     fontStyle:  "italic",
   },
   content: {
-    display:   "flex",
-    flexWrap:  "wrap",
-    gap:       "1.5rem",
-    padding:   "1.5rem",
-    maxWidth:  "1100px",
-    margin:    "0 auto",
+    display:  "flex",
+    flexWrap: "wrap",
+    gap:      "1.5rem",
+    padding:  "1.5rem",
+    maxWidth: "1100px",
+    margin:   "0 auto",
   },
   formPanel:   { flex: "1 1 380px" },
   resultPanel: { flex: "1 1 380px" },
