@@ -14,9 +14,9 @@ const TABS = [
   { id: "SIP",           label: "📈 SIP",          desc: "Systematic Investment Plan" },
   { id: "Step-Up SIP",   label: "📊 Step-Up SIP",  desc: "Increasing SIP every year" },
   { id: "Lumpsum",       label: "💰 Lumpsum",       desc: "One-time investment" },
-  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",   desc: "Combined SIP & Lumpsum" },
+  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",  desc: "Combined SIP & Lumpsum investment" },
   { id: "Goal SIP",      label: "🎯 Goal SIP",      desc: "Target-based planning" },
-  { id: "SWP",           label: "🔄 SWP",           desc: "Systematic Withdrawal" },
+  { id: "SWP",           label: "🔄 SWP",           desc: "Systematic Withdrawal Plan" },
   { id: "PPF",           label: "🏛️ PPF",           desc: "Public Provident Fund" },
   { id: "Compare",       label: "⚖️ Compare",       desc: "SIP vs Lumpsum" },
   { id: "XIRR",          label: "📐 XIRR",          desc: "Actual returns calculator" },
@@ -25,11 +25,13 @@ const TABS = [
 export default function App() {
   const [activeTab, setActiveTab] = useState("SIP");
   const [result,    setResult]    = useState(null);
+
   const activeDesc = TABS.find(t => t.id === activeTab)?.desc;
 
   return (
     <div style={styles.app}>
 
+      {/* ── HEADER ── */}
       <header style={styles.header}>
         <div style={styles.headerInner}>
           <div style={styles.logoWrap}>
@@ -56,6 +58,7 @@ export default function App() {
         </div>
       </header>
 
+      {/* ── TAB BAR ── */}
       <div style={styles.tabBar}>
         {TABS.map((tab) => (
           <button
@@ -71,8 +74,10 @@ export default function App() {
         ))}
       </div>
 
+      {/* ── TAB DESCRIPTION ── */}
       <div style={styles.tabDesc}>{activeDesc}</div>
 
+      {/* ── MAIN CONTENT ── */}
       <div style={styles.content}>
         <div style={styles.formPanel}>
           {activeTab === "SIP"           && <SIPForm        onResult={setResult} />}
@@ -92,6 +97,7 @@ export default function App() {
         )}
       </div>
 
+      {/* ── FOOTER ── */}
       <footer style={styles.footer}>
         <div style={styles.footerInner}>
           <div style={styles.footerBrand}>
@@ -283,10 +289,10 @@ const styles = {
     marginBottom: "0.8rem",
   },
   footerDisclaimer: {
-    fontSize:     "0.72rem",
-    color:        "#A59A8A",
-    borderTop:    "1px solid #4B3425",
-    paddingTop:   "0.8rem",
-    marginTop:    "0.8rem",
+    fontSize:   "0.72rem",
+    color:      "#A59A8A",
+    borderTop:  "1px solid #4B3425",
+    paddingTop: "0.8rem",
+    marginTop:  "0.8rem",
   },
 };
