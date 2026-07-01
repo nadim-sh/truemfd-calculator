@@ -33,19 +33,18 @@ export default function SIPLumpsumForm({ onResult }) {
         <span style={{ fontSize: "2rem" }}>💎</span>
         <h2 style={headingStyle}>SIP + Lumpsum Calculator</h2>
         <p style={subStyle}>
-          Combine a one-time lumpsum investment with monthly SIP
-          to see your total wealth potential.
+          Combine a one-time lumpsum with monthly SIP to see total wealth.
         </p>
       </div>
 
       <div style={sectionBox}>
-        <div style={sectionLabel}>💰 Lumpsum Investment</div>
+        <div style={sectionLabel}>💰 One-Time Lumpsum</div>
         <Field
           label="Lumpsum Amount (₹)"
           name="lumpsum_amount"
           value={form.lumpsum_amount}
           onChange={handle}
-          placeholder="e.g. 1,00,000"
+          placeholder="e.g. 100000"
         />
       </div>
 
@@ -56,7 +55,7 @@ export default function SIPLumpsumForm({ onResult }) {
           name="monthly_sip"
           value={form.monthly_sip}
           onChange={handle}
-          placeholder="e.g. 10,000"
+          placeholder="e.g. 10000"
         />
       </div>
 
@@ -115,7 +114,7 @@ const headerStyle  = { marginBottom: "1.5rem", paddingBottom: "1rem", borderBott
 const headingStyle = { margin: "0.3rem 0 0", fontSize: "1.4rem", fontWeight: 700, color: "#4B3425", fontFamily: "'Playfair Display', Georgia, serif" };
 const subStyle     = { margin: "0.4rem 0 0", fontSize: "0.85rem", color: "#A59A8A", fontFamily: "'Lato', sans-serif" };
 const sectionBox   = { background: "#F4EFE8", borderRadius: "10px", padding: "1rem", marginBottom: "1rem" };
-const sectionLabel = { fontWeight: 700, color: "#B08D57", fontSize: "0.85rem", marginBottom: "0.8rem", fontFamily: "'Lato', sans-serif", letterSpacing: "0.5px" };
+const sectionLabel = { fontWeight: 700, color: "#B08D57", fontSize: "0.85rem", marginBottom: "0.8rem", fontFamily: "'Lato', sans-serif" };
 const labelStyle   = { display: "block", fontWeight: 600, marginBottom: "0.3rem", color: "#4B3425", fontSize: "0.9rem", fontFamily: "'Lato', sans-serif" };
 const inputStyle   = { width: "100%", padding: "0.75rem 1rem", borderRadius: "8px", border: "2px solid #DDD1C2", fontSize: "1rem", boxSizing: "border-box", fontFamily: "'Lato', sans-serif", color: "#2E221B", background: "#fff" };
 const btnStyle     = { width: "100%", padding: "0.9rem", background: "linear-gradient(135deg, #B08D57, #8B6914)", color: "#fff", border: "none", borderRadius: "10px", fontSize: "1rem", fontWeight: 700, cursor: "pointer", fontFamily: "'Lato', sans-serif", marginTop: "0.5rem" };
