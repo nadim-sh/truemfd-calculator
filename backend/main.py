@@ -12,7 +12,7 @@ from xirr import xirr, irr
 
 app = FastAPI(
     title="TrueMFD SIP Calculator API",
-    description="SIP · Step-Up · Lumpsum · Goal SIP · SWP · PPF · SIP+Lumpsum · XIRR | TrueMFD ARN-2213",
+    description="SIP, Step-Up, Lumpsum, Goal SIP, SWP, PPF, SIP+Lumpsum, XIRR | TrueMFD ARN-2213",
     version="5.0.0",
 )
 
@@ -26,22 +26,25 @@ app.add_middleware(
 DISCLAIMER = (
     "Mutual fund investments are subject to market risks. "
     "Returns shown are illustrative and not guaranteed. "
-    "TrueMFD — ARN-2213 | EUIN-E073190"
+    "TrueMFD | ARN-2213 | EUIN-E073190"
 )
+
 
 @app.get("/", tags=["Health"])
 def root():
     return {
         "status": "TrueMFD SIP Calculator API v5.0.0 running",
-        "powered_by": "TrueMFD — ARN-2213 | EUIN-E073190",
+        "powered_by": "TrueMFD | ARN-2213 | EUIN-E073190",
         "docs": "/docs",
     }
+
 
 @app.post("/sip/calculate", tags=["SIP"])
 def sip_post(req: SIPRequest):
     result = calculate_sip(req.monthly_investment, req.annual_return_rate, req.duration_years)
     return {"type": "Standard SIP", "inputs": req.model_dump(),
             "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/sip/calculate", tags=["SIP"])
 def sip_get(
@@ -56,6 +59,7 @@ def sip_get(
                        "duration_years": duration_years},
             "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/sip/step-up", tags=["Step-Up SIP"])
 def step_up_post(req: StepUpSIPRequest):
     result, breakdown = calculate_step_up_sip(
@@ -65,6 +69,7 @@ def step_up_post(req: StepUpSIPRequest):
             "results": result.model_dump(),
             "yearly_breakdown": [y.model_dump() for y in breakdown],
             "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/sip/step-up", tags=["Step-Up SIP"])
 def step_up_get(
@@ -85,11 +90,13 @@ def step_up_get(
             "yearly_breakdown": [y.model_dump() for y in breakdown],
             "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/lumpsum/calculate", tags=["Lumpsum"])
 def lumpsum_post(req: LumpsumRequest):
     result = calculate_lumpsum(req.investment_amount, req.annual_return_rate, req.duration_years)
     return {"type": "Lumpsum", "inputs": req.model_dump(),
             "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/lumpsum/calculate", tags=["Lumpsum"])
 def lumpsum_get(
@@ -104,11 +111,13 @@ def lumpsum_get(
                        "duration_years": duration_years},
             "results": result.model_dump(), "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/goal-sip", tags=["Goal SIP"])
 def goal_sip_post(req: GoalSIPRequest):
     result = calculate_goal_sip(req.goal_amount, req.annual_return_rate, req.duration_years)
     return {"type": "Goal-Based SIP", "inputs": req.model_dump(),
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/goal-sip", tags=["Goal SIP"])
 def goal_sip_get(
@@ -123,12 +132,14 @@ def goal_sip_get(
                        "duration_years": duration_years},
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/swp/calculate", tags=["SWP"])
 def swp_post(req: SWPRequest):
     result = calculate_swp(req.corpus_amount, req.monthly_withdrawal,
                            req.annual_return_rate, req.duration_years)
     return {"type": "SWP", "inputs": req.model_dump(),
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/swp/calculate", tags=["SWP"])
 def swp_get(
@@ -146,11 +157,13 @@ def swp_get(
                        "duration_years": duration_years},
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/ppf/calculate", tags=["PPF"])
 def ppf_post(req: PPFRequest):
     result = calculate_ppf(req.annual_investment, req.duration_years)
     return {"type": "PPF", "inputs": req.model_dump(),
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/ppf/calculate", tags=["PPF"])
 def ppf_get(
@@ -163,12 +176,14 @@ def ppf_get(
                        "duration_years": duration_years},
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/sip-lumpsum", tags=["SIP + Lumpsum"])
 def sip_lumpsum_post(req: SIPLumpsumRequest):
     result = calculate_sip_lumpsum(req.lumpsum_amount, req.monthly_sip,
                                    req.annual_return_rate, req.duration_years)
     return {"type": "SIP + Lumpsum Combined", "inputs": req.model_dump(),
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/sip-lumpsum", tags=["SIP + Lumpsum"])
 def sip_lumpsum_get(
@@ -186,11 +201,13 @@ def sip_lumpsum_get(
                        "duration_years": duration_years},
             "results": result, "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/compare", tags=["Comparison"])
 def compare_post(req: CompareRequest):
     data = calculate_comparison(req.monthly_investment, req.annual_return_rate, req.duration_years)
     return {"type": "SIP vs Lumpsum Comparison", "inputs": req.model_dump(),
             **data, "currency": "INR", "disclaimer": DISCLAIMER}
+
 
 @app.get("/compare", tags=["Comparison"])
 def compare_get(
@@ -205,6 +222,7 @@ def compare_get(
                        "duration_years": duration_years},
             **data, "currency": "INR", "disclaimer": DISCLAIMER}
 
+
 @app.post("/xirr", tags=["XIRR / IRR"])
 def calculate_xirr(req: XIRRRequest):
     try:
@@ -216,6 +234,7 @@ def calculate_xirr(req: XIRRRequest):
                 "disclaimer": DISCLAIMER}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @app.post("/irr", tags=["XIRR / IRR"])
 def calculate_irr(req: IRRRequest):
