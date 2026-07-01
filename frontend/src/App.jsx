@@ -14,10 +14,10 @@ const TABS = [
   { id: "SIP",           label: "📈 SIP",          desc: "Systematic Investment Plan" },
   { id: "Step-Up SIP",   label: "📊 Step-Up SIP",   desc: "Increasing SIP every year" },
   { id: "Lumpsum",       label: "💰 Lumpsum",       desc: "One-time investment" },
-  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",   desc: "Combined SIP & Lumpsum" },
   { id: "Goal SIP",      label: "🎯 Goal SIP",      desc: "Target-based planning" },
   { id: "SWP",           label: "🔄 SWP",           desc: "Systematic Withdrawal" },
   { id: "PPF",           label: "🏛️ PPF",           desc: "Public Provident Fund" },
+  { id: "SIP + Lumpsum", label: "💎 SIP+Lumpsum",   desc: "Combined SIP & Lumpsum investment" },
   { id: "Compare",       label: "⚖️ Compare",       desc: "SIP vs Lumpsum" },
   { id: "XIRR",          label: "📐 XIRR",          desc: "Actual returns calculator" },
 ];
@@ -25,12 +25,10 @@ const TABS = [
 export default function App() {
   const [activeTab, setActiveTab] = useState("SIP");
   const [result,    setResult]    = useState(null);
-
   const activeDesc = TABS.find(t => t.id === activeTab)?.desc;
 
   return (
     <div style={styles.app}>
-
       <header style={styles.header}>
         <div style={styles.headerInner}>
           <div style={styles.logoWrap}>
@@ -79,10 +77,10 @@ export default function App() {
           {activeTab === "SIP"           && <SIPForm        onResult={setResult} />}
           {activeTab === "Step-Up SIP"   && <StepUpForm     onResult={setResult} />}
           {activeTab === "Lumpsum"       && <LumpsumForm    onResult={setResult} />}
-          {activeTab === "SIP + Lumpsum" && <SIPLumpsumForm onResult={setResult} />}
           {activeTab === "Goal SIP"      && <GoalSIPForm    onResult={setResult} />}
           {activeTab === "SWP"           && <SWPForm        onResult={setResult} />}
           {activeTab === "PPF"           && <PPFForm        onResult={setResult} />}
+          {activeTab === "SIP + Lumpsum" && <SIPLumpsumForm onResult={setResult} />}
           {activeTab === "Compare"       && <CompareForm    onResult={setResult} />}
           {activeTab === "XIRR"          && <XIRRForm       onResult={setResult} />}
         </div>
@@ -99,8 +97,8 @@ export default function App() {
             TrueMFD — True Mutual Fund Distributor
           </div>
           <div style={styles.footerDetails}>
-            Nadim Sarfraz Husain | ARN-2213 | EUIN-E073190
-            | 9822204877 / 9284731200 | www.truemfd.com
+            Nadim Sarfraz Husain | ARN-2213 | EUIN-E073190 |
+            9822204877 / 9284731200 | www.truemfd.com
           </div>
           <div style={styles.footerAddress}>
             Block No. 108, 1st Floor, Haakim Arcade,
@@ -113,7 +111,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
@@ -193,6 +190,7 @@ const styles = {
   },
   heroText: {
     textAlign: "center",
+    marginTop: "1.5rem",
     maxWidth:  "1100px",
     margin:    "1.5rem auto 0",
   },
@@ -230,6 +228,7 @@ const styles = {
     color:        "#4B3425",
     fontSize:     "0.85rem",
     fontFamily:   "'Lato', sans-serif",
+    transition:   "all 0.2s",
   },
   tabActive: {
     background:  "linear-gradient(135deg, #4B3425, #2E221B)",
